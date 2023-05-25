@@ -81,7 +81,7 @@ public class TransferRepository {
             return Collections.singletonList(cardTransactionsWaitConfirmOperation.get(verification.getOperationId()));
         }
         //выбросить ошибку в сервисе или репозитории и удалить временные данные
-        throw new InvalidTransactionExceptions("Ошибочка, такого мы не предвидели!");
+        throw new InvalidTransactionExceptions("Случайная ошибка!");
     }
 
     public Map<String, Card> getMapStorage() {

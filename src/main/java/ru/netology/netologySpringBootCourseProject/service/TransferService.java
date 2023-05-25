@@ -68,7 +68,7 @@ public class TransferService {
         for (Operation operation : operations) {
             return operationWithMoney(verification, operation);
         }
-        throw new InvalidTransactionExceptions("Ошибочка, такого мы не предвидели!");
+        throw new InvalidTransactionExceptions("Случайная ошибка!");
     }
 
 
