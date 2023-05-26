@@ -8,14 +8,13 @@ import ru.netology.netologySpringBootCourseProject.model.*;
 import ru.netology.netologySpringBootCourseProject.repository.TransferRepository;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class TransferService {
-    TransferRepository transferRepository;
+    private final TransferRepository transferRepository;
     //1%
-    private final int COMMISSION = 100;
-    private final String SECRET_CODE = "0000";
+    static final int COMMISSION = 100;
+    static final String SECRET_CODE = "0000";
     private final TransferLog transferLog;
 
     public TransferService(TransferRepository transferRepository) {
@@ -37,7 +36,6 @@ public class TransferService {
             throw new InvalidTransactionExceptions("Карта для перевода и получения совпадает!\n" +
                     "Проверьте входные данные ещё раз");
         }
-        String operationId = transferRepository.transferMoneyCardToCard(cardFrom, cardToNumber, amount);
 
         BigDecimal balanceFrom = transferRepository.getMapStorage().get(cardFrom.getCardNumber()).getAmount().getValue();
         Amount commission = new Amount(amount.getValue().divide(BigDecimal.valueOf(COMMISSION)), amount.getCurrency());
@@ -45,30 +43,20 @@ public class TransferService {
 
         // пишем проверку баланса и перевод денег
         LogBuilder logBuilder = new LogBuilder()
-                .setOperationId(operationId)
+                //.setOperationId(operationId)
                 .setCardNumberFrom(cardFrom.getCardNumber())
                 .setCardNumberTo(cardToNumber)
                 .setAmount(amount)
                 .setCommission(commission);
         if (balanceFrom.compareTo(sumResult) >= 0) {
             logBuilder.setResult("ЗАПРОС НА ПЕРЕВОД");
-            transferRepository.setCardTransactionsWaitConfirmOperation(operationId, new Operation(logBuilder));
             transferLog.log(logBuilder);
-            return "Ожидаем подтверждение на перевод операции №" + operationId;
         } else {
             logBuilder.setResult("НЕДОСТАТОЧНО СРЕДСТВ ДЛЯ ОПЕРАЦИИ");
             transferLog.log(logBuilder);
             throw new InvalidTransactionExceptions(logBuilder.getResult());
         }
-    }
-
-
-    public String confirmOperation(Verification verification) throws InvalidTransactionExceptions {
-        List<Operation> operations = transferRepository.confirmOperation(verification);
-        for (Operation operation : operations) {
-            return operationWithMoney(verification, operation);
-        }
-        throw new InvalidTransactionExceptions("Случайная ошибка!");
+        return cardToNumber;
     }
 
 

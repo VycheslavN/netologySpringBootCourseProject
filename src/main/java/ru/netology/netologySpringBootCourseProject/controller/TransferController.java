@@ -9,7 +9,7 @@ import ru.netology.netologySpringBootCourseProject.service.TransferService;
 
 @RestController
 public class TransferController {
-    TransferService transferService;
+    private final TransferService transferService;
 
     public TransferController(TransferService transferService) {
         this.transferService = transferService;
@@ -25,6 +25,6 @@ public class TransferController {
     public String confirmOperation(@RequestBody @Validated Verification verification) throws InvalidTransactionExceptions {
         //подтверждение нашей операции после успешной проверки карт
         //выбрать расширение и что возвращает
-        return transferService.confirmOperation(verification);
+        return transferService.toString();
     }
 }

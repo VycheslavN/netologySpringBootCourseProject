@@ -6,4 +6,4 @@ services:
     container_name: "moneyapp-spring-netologySpringBootCourseProject"
     build: ./
     ports:
-      - 5500:5500
+      - 8080:8080

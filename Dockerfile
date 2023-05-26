@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-EXPOSE 5500
+EXPOSE 8080
 
 ADD target/netologySpringBootCourseProject-0.0.1-SNAPSHOT.jar moneyapp.jar
 

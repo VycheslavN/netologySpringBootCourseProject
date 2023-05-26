@@ -12,7 +12,7 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(InvalidTransactionExceptions.class)
     public ResponseEntity<String> invalidTransaction(InvalidTransactionExceptions e) {
         return ResponseEntity
-                .status(HttpStatus.I_AM_A_TEAPOT)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(e.getMessage());
     }
 }
